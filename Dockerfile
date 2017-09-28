@@ -6,7 +6,7 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 NOKOGIRI_USE_SYSTEM_LIBRARIES=true
 # Install system packages (ruby, python, node and build libraries)
 RUN apt-get update && \
     apt-get install --yes \
-        build-essential ruby-dev python3-dev python3-pip \
+        build-essential ruby-dev ruby-bundler python3-dev python3-pip \
         libpq-dev libjpeg-dev zlib1g-dev libpng12-dev libmagickwand-dev \
         libjpeg-progs optipng git vim curl
 
