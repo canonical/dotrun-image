@@ -13,10 +13,6 @@ RUN apt-get update && \
 # Supportive python tools for debugging, syntax checking and DB connectivity
 RUN pip3 install --upgrade pip ipdb flake8 python-swiftclient psycopg2 pymongo
 
-# Install git-repo
-RUN curl https://raw.githubusercontent.com/esrlabs/git-repo/stable/repo > /usr/bin/repo
-RUN chmod +x /usr/bin/repo
-
 # Get nodejs
 RUN mkdir /usr/lib/nodejs && \
     curl https://nodejs.org/dist/v6.11.3/node-v6.11.3-linux-x64.tar.xz | tar -xJ -C /usr/lib/nodejs && \
