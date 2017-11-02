@@ -26,8 +26,8 @@ RUN mkdir /usr/lib/nodejs && \
 ENV NODEJS_HOME=/usr/lib/nodejs/node-v6.11.3
 ENV PATH=$NODEJS_HOME/bin:$PATH
 
-# Latest Yarn package manager
-RUN npm install --global yarn
+# Latest Yarn package manager and bower
+RUN npm install --global yarn bower
 
 # Create a shared home directory - this helps anonymous users have a home
 ENV HOME=/home/shared LANG=C.UTF-8 LC_ALL=C.UTF-8
