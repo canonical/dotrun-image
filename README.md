@@ -6,7 +6,7 @@ A docker image as a basis for Canonical webteam's local development tools.
 
 - Based on ubuntu:xenial
 - Python3
-- Latest LTS release of NodeJS
+- NodeJS version 6.11.3 LTS
 - Yarn
 - Ruby
 
