@@ -8,7 +8,7 @@ RUN apt-get update && \
     apt-get install --yes \
         build-essential ruby-dev ruby-bundler python3-dev python3-pip \
         libpq-dev libjpeg-dev zlib1g-dev libpng12-dev libmagickwand-dev \
-        libjpeg-progs optipng git vim curl jq python-launchpadlib
+        libjpeg-progs optipng git vim curl jq python-launchpadlib libsodium-dev
 
 # Supportive python tools for debugging, syntax checking and DB connectivity
 RUN pip3 install --upgrade pip ipdb flake8 python-swiftclient psycopg2 pymongo
