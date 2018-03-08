@@ -11,7 +11,7 @@ RUN apt-get update && \
         libjpeg-progs optipng git vim curl
 
 # Supportive python tools for debugging, syntax checking and DB connectivity
-RUN pip3 install --upgrade pip ipdb flake8 python-swiftclient psycopg2 pymongo
+RUN pip3 install --upgrade pip ipdb flake8 python-swiftclient psycopg2 pymongo pipenv
 
 # Get nodejs
 RUN mkdir /usr/lib/nodejs && \
