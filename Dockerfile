@@ -11,7 +11,7 @@ RUN apt-get update && \
         libjpeg-progs optipng git vim curl jq python-launchpadlib libsodium-dev
 
 # Supportive python tools for debugging, syntax checking and DB connectivity
-RUN pip3 install --upgrade pip ipdb flake8 python-swiftclient psycopg2 pymongo pipenv
+RUN pip3 install --upgrade ipdb flake8 python-swiftclient psycopg2 pymongo pipenv
 
 # Get nodejs
 RUN mkdir /usr/lib/nodejs && \
