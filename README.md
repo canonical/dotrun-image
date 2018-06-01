@@ -4,7 +4,7 @@ A docker image as a basis for Canonical webteam's local development tools.
 
 ## Features
 
-- Based on ubuntu:xenial
+- Based on ubuntu:bionic
 - Python3
 - NodeJS version 6.11.3 LTS
 - Yarn
