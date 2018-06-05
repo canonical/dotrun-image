@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
 # Optimise environment variables
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 NOKOGIRI_USE_SYSTEM_LIBRARIES=true
@@ -7,7 +7,7 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 NOKOGIRI_USE_SYSTEM_LIBRARIES=true
 RUN apt-get update && \
     apt-get install --yes \
         build-essential ruby-dev ruby-bundler python3-dev python3-pip \
-        libpq-dev libjpeg-dev zlib1g-dev libpng12-dev libmagickwand-dev \
+        libpq-dev libjpeg-dev zlib1g-dev libpng-dev libmagickwand-dev \
         libjpeg-progs optipng git vim curl jq python-launchpadlib libsodium-dev
 
 # Supportive python tools for debugging, syntax checking and DB connectivity
