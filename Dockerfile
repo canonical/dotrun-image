@@ -26,6 +26,8 @@ ENV PATH=$NODEJS_HOME/bin:$PATH
 RUN npm install --global yarn bower
 
 # Create a shared home directory - this helps anonymous users have a home
+RUN ln -s /root /home/shared
+WORKDIR /home/shared
 ENV HOME=/home/shared LANG=C.UTF-8 LC_ALL=C.UTF-8
 RUN mkdir -p $HOME
 RUN mkdir -p $HOME/.cache/yarn/
