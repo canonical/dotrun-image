@@ -13,14 +13,8 @@ RUN apt-get update && \
 # Supportive python tools for debugging, syntax checking and DB connectivity
 RUN pip3 install --upgrade ipdb flake8 python-swiftclient psycopg2 pymongo pipenv
 
-# Get nodejs
-RUN mkdir /usr/lib/nodejs && \
-    curl https://nodejs.org/dist/v6.11.3/node-v6.11.3-linux-x64.tar.xz | tar -xJ -C /usr/lib/nodejs && \
-    mv /usr/lib/nodejs/node-v6.11.3-linux-x64 /usr/lib/nodejs/node-v6.11.3
-
-# Set nodejs paths
-ENV NODEJS_HOME=/usr/lib/nodejs/node-v6.11.3
-ENV PATH=$NODEJS_HOME/bin:$PATH
+# Install node
+RUN apt-get install nodejs npm --yes
 
 # Latest Yarn package manager and bower
 RUN npm install --global yarn bower
