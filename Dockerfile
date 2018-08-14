@@ -8,13 +8,11 @@ RUN apt-get update && \
     apt-get install --yes \
         build-essential ruby-dev ruby-bundler python3-dev python3-pip \
         libpq-dev libjpeg-dev zlib1g-dev libpng-dev libmagickwand-dev \
-        libjpeg-progs optipng git vim curl jq python-launchpadlib libsodium-dev
+        libjpeg-progs optipng git vim curl jq python-launchpadlib libsodium-dev \
+        nodejs npm
 
 # Supportive python tools for debugging, syntax checking and DB connectivity
 RUN pip3 install --upgrade ipdb flake8 python-swiftclient psycopg2 pymongo pipenv
-
-# Install node
-RUN apt-get install nodejs npm --yes
 
 # Latest Yarn package manager and bower
 RUN npm install --global yarn bower
