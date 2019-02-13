@@ -12,7 +12,7 @@ RUN apt-get update && \
         nodejs npm
 
 # Supportive python tools for debugging, syntax checking and DB connectivity
-RUN pip3 install --upgrade ipdb flake8 python-swiftclient psycopg2 pymongo pipenv
+RUN pip3 install --upgrade ipdb flake8 black python-swiftclient psycopg2 pymongo pipenv
 
 # Latest Yarn package manager and bower
 RUN npm install --global yarn bower
