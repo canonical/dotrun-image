@@ -7,13 +7,13 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 NOKOGIRI_USE_SYSTEM_LIBRARIES=true
 # Node ppa provided by: https://github.com/nodesource/distributions
 RUN apt-get update && \
     apt-get install curl --yes && \
-    curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+    curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
     apt-get update && \
     apt-get install --yes \
         build-essential ruby-dev ruby-bundler python3-dev python3-pip \
         libpq-dev libjpeg-dev zlib1g-dev libpng-dev libmagickwand-dev \
         libjpeg-progs optipng git vim curl jq python-launchpadlib libsodium-dev \
-        nodejs npm
+        nodejs
 
 # Supportive python tools for debugging, syntax checking and DB connectivity
 RUN pip3 install --upgrade ipdb flake8 black python-swiftclient psycopg2 pymongo pipenv
