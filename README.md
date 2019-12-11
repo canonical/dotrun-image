@@ -28,10 +28,24 @@ Then run that project and ensure it works as expected.
 
 ## Releasing
 
-Once you have verified that the container works for a few different projects you can push it up to the Docker Hub
+Once you have verified that the container works for a few different projects you can push it up to the Docker Hub and our private docker registry:
+
+### Docker hub
 
 `docker login`
 
 `docker push canonicalwebteam/dev:<next tag>`
 
 After the push has completed successfully after a few minutes verify that the image is on the hub https://hub.docker.com/r/canonicalwebteam/dev/tags?page=1&name=<next tag>. Then remove your local copy of the image and try running one of the projects from before. It should download the image and run as before.
+
+### Canonical Docker registry
+
+If you are going to use this image in our Kubernetes cluster, you probably want to publish the image in our Canonical Docker registry.
+
+You'll need to build the image with the following prefix in the tag:
+
+`docker build . --tag prod-comms.docker-registry.canonical.com/canonicalwebteam/dev:v1.6.5`
+
+And then publish it, keep in mind that you will need credentials to publish in our private repository:
+
+`docker push prod-comms.docker-registry.canonical.com/canonicalwebteam/dev:v1.6.5`
