@@ -7,7 +7,7 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 NOKOGIRI_USE_SYSTEM_LIBRARIES=true
 # Node ppa provided by: https://github.com/nodesource/distributions
 RUN apt-get update && \
     apt-get install curl --yes && \
-    curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+    curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
     apt-get update && \
     apt-get install --yes \
         build-essential ruby-dev ruby-bundler python3-dev python3-pip \
