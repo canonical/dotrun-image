@@ -4,9 +4,9 @@ A docker image as a basis for Canonical webteam's local development tools.
 
 ## Features
 
-- Based on ubuntu:bionic
-- Python3
-- NodeJS version 16.X LTS
+- Based on ubuntu:focal
+- Python 3.8
+- Node 16 LTS
 - Yarn
 - Ruby
 
