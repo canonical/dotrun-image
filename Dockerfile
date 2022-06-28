@@ -1,35 +1,39 @@
 FROM ubuntu:focal
 
-# Optimise environment variables
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 NOKOGIRI_USE_SYSTEM_LIBRARIES=true DEBIAN_FRONTEND=noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
-# Install system packages (ruby, python, node and build libraries)
-# Node ppa provided by: https://github.com/nodesource/distributions
+# Install essential system packages
 RUN apt-get update && \
-    apt-get install curl --yes && \
-    curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
-    apt-get update && \
     apt-get install --yes \
-    build-essential ruby-dev ruby-bundler python3-dev python3-pip \
-    libpq-dev libjpeg-dev zlib1g-dev libpng-dev libmagickwand-dev \
-    libjpeg-progs optipng git vim curl jq python3-launchpadlib libsodium-dev \
-    nodejs
+    git curl wget build-essential python3-dev python3-pip
 
-# Supportive python tools for debugging, syntax checking and DB connectivity
-RUN pip3 install --upgrade ipdb flake8 black python-swiftclient psycopg2 pymongo pipenv
+# Set up NodeJS 16 repository
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 
-# Latest Yarn package manager and bower
-RUN npm install --global yarn bower
+# Install common dependencies used in projects
+RUN apt-get install --yes \
+    gettext libjpeg-dev libjpeg-progs libmagic1 gpg \
+    libmagickwand-dev libpng-dev libpq-dev libsodium-dev \
+    optipng zlib1g-dev libasound2 libatk-bridge2.0-0 \
+    libatk1.0-0 libatspi2.0-0 libcairo2 libcups2 libdrm2 \
+    libgbm1 libnss3 libpango-1.0-0 libx11-6 libxau6 libxcb1 \
+    libxcomposite1 libxdamage1 libxdmcp6 libxext6 libxfixes3 \
+    libxkbcommon-x11-0 libxrandr2 nodejs
 
-# Create a shared home directory - this helps anonymous users have a home
-WORKDIR /home/shared
-ENV HOME=/home/shared LANG=C.UTF-8 LC_ALL=C.UTF-8
-RUN mkdir -p $HOME
-RUN mkdir -p $HOME/.cache/yarn/
-RUN mkdir -p $HOME/.cache/bower/
-RUN chmod -R 777 $HOME
+# Update npm and install yarn
+RUN npm install --location=global npm
+RUN npm install --location=global yarn
 
-# SSH agent finds up home using /etc/passwd
-# Fix for .ssh folder
-RUN mkdir -p $HOME/.ssh
-RUN ln -s $HOME/.ssh /root/.ssh
+# Copy and install dotrun-docker
+WORKDIR /tmp
+ADD src src
+RUN pip3 install ./src
+RUN rm -r /tmp/*
+
+# Create ubuntu user
+RUN groupadd --gid 1000 ubuntu
+RUN useradd -rm -d /home/ubuntu -s /bin/bash -g ubuntu -G sudo -u 1000 ubuntu
+USER ubuntu
+WORKDIR /home/ubuntu

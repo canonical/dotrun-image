@@ -1,51 +1,63 @@
-# canonicalwebteam/dev docker image
+# ![dotrun](https://assets.ubuntu.com/v1/9dcb3655-dotrun.png?w=100 "dotrun") Docker image
 
-A docker image as a basis for Canonical webteam's local development tools.
 
-## Features
+This project is a docker image for developing Node.js and Python web projects. It is an essential tool for the Canonical web team local development.
+
+## Image Features
 
 - Based on ubuntu:focal
 - Python 3.8
 - Node 16 LTS
 - Yarn
-- Ruby
+- dotrun-docker
 
-## Testing
+### dotrun-docker:
 
-Before releasing this image to the repository you'll want to test it locally.
+dotrun-docker is a Python package inside the Docker image. It simplifies running Canonical web projects:
 
-From within the root folder of the project run the following, where `<next tag>` is the next available tag. You can find out what that should by by visiting https://hub.docker.com/r/canonicalwebteam/dev/tags.
+- Make use of standard `package.json` script entrypoints:
+  - `dotrun` runs `yarn run start`
+  - `dotrun foo` runs `yarn run foo`
+- Detect changes in `package.json` and only run `yarn install` when needed
+- Detect changes in `requirements.txt` and only run `pip3 install` when needed
+- Run scripts using environment variables from `.env` and `.env.local` files
+- Keep python dependencies in `.venv` in the project folder for easy access
 
-`docker build . --tag canonicalwebteam/dev:<next tag>`
+## Usage
 
-Navigate to a local project you'd like to test with and update the following line in the `run` script with the new tag name.
+Before running this image locally, you should know that it is an essential part of [dotrun](https://github.com/canonical/dotrun), our python package for running Canonical websites. If you are interested in running our web projects, visit our [dotrun](https://github.com/canonical/dotrun) repository.
 
-`dev_image="canonicalwebteam/dev:<next tag>"`
+If you prefer to access this image directly and work on it, then you can run it and access a bash environment with:
+```bash
+docker run -it canonicalwebteam/dotrun-image:latest /bin/bash
+```
 
-Then run that project and ensure it works as expected.
+These are the `dotrun-docker` commands available inside our image:
 
-`./run`
+```bash
+$ dotrun          # Install dependencies and run the `start` script from package.json
+$ dotrun clean    # Delete `node_modules`, `.venv`, `.dotrun.json`, and run `yarn run clean`
+$ dotrun install  # Force install node and python dependencies
+$ dotrun exec     # Start a shell inside the dotrun environment
+$ dotrun exec {command}          # Run {command} inside the dotrun environment
+$ dotrun {script-name}           # Install dependencies and run `yarn run {script-name}`
+$ dotrun -s {script}             # Run {script} but skip installing dependencies
+$ dotrun --env FOO=bar {script}  # Run {script} with FOO environment variable
+```
+
+## Building/Testing
+
+To QA any changes to this image, you probably want to build a local image with Docker:
+
+`docker build . --tag canonicalwebteam/dotrun-image:local`
 
 ## Releasing
 
-Once you have verified that the container works for a few different projects you can push it up to the Docker Hub and our private docker registry:
+Changes to the default branch will trigger a new release using GitHub Actions.
 
-### Docker hub
+- Released to [Docker Hub canonicalwebteam/dotrun-image](https://hub.docker.com/r/canonicalwebteam/dotrun-image/)
+- Architectures: AMD64 and ARM64
 
-`docker login`
+### Auto-releases
 
-`docker push canonicalwebteam/dev:<next tag>`
-
-After the push has completed successfully after a few minutes verify that the image is on the hub https://hub.docker.com/r/canonicalwebteam/dev/tags?page=1&name=<next tag>. Then remove your local copy of the image and try running one of the projects from before. It should download the image and run as before.
-
-### Canonical Docker registry
-
-If you are going to use this image in our Kubernetes cluster, you probably want to publish the image in our Canonical Docker registry.
-
-You'll need to build the image with the following prefix in the tag:
-
-`docker build . --tag prod-comms.docker-registry.canonical.com/canonicalwebteam/dev:v1.6.5`
-
-And then publish it, keep in mind that you will need credentials to publish in our private repository:
-
-`docker push prod-comms.docker-registry.canonical.com/canonicalwebteam/dev:v1.6.5`
+This image is automatically built and released every month. This is to ensure dependencies are up to date on local development when using [dotrun](https://github.com/canonical/dotrun).
