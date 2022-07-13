@@ -3,6 +3,8 @@ FROM ubuntu:focal
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV DISABLE_PIP_VERSION_CHECK=1
+ENV NO_UPDATE_NOTIFIER=true
 
 # Install essential system packages
 RUN apt-get update && \

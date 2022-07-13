@@ -39,12 +39,6 @@ cli_parser = ArgumentParser(
 
 # Options
 cli_parser.add_argument(
-    "-C",
-    "--directory",
-    help="The directory in which to run commands (default: current directory)",
-    default=SUPPRESS,
-)
-cli_parser.add_argument(
     "-s",
     "--skip-install",
     action="store_true",
@@ -75,7 +69,7 @@ cli_parser.add_argument(
         " within the dotrun context\n"
         "- install: Reinstall node and python dependencies\n"
         "- clean: Run `yarn run clean` and remove all dotrun files\n"
-        "- clean-cache: Delete the snap's cache, including yarn & pip caches\n"
+        "- clean-cache: Delete the cache, including yarn & pip caches\n"
     ),
     nargs="?",
     default="start",
@@ -96,11 +90,6 @@ def cli(args=None):
 
     # Commands that don't need dependencies
     if command == "version":
-        dotrun_version = os.environ.get("DOTRUN_VERSION")
-
-        if dotrun_version:
-            print("dotrun v{dotrun_version}")
-
         print(f"dotrun-docker v{__version__}")
         sys.exit()
 
@@ -114,9 +103,6 @@ def cli(args=None):
 
     # Prepare dotrun object
     path = os.getcwd()
-
-    if "directory" in arguments:
-        path = os.path.abspath(arguments.directory)
 
     dotrun = Project(path=path, env_extra=env_extra)
 

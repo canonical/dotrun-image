@@ -293,12 +293,6 @@ class Project:
         self.log.note(f"Creating python environment: {self.pyenv_dir}")
         python_path = shutil.which("python3")
 
-        if "SNAP_REVISION" in os.environ:
-            python_path = python_path.replace(
-                "/snap/dotrun/" + os.environ["SNAP_REVISION"],
-                "/snap/dotrun/current",
-            )
-
         self.exec(
             [
                 "virtualenv",

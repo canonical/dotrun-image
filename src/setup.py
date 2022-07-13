@@ -8,7 +8,7 @@ assert sys.version_info >= (3, 8), "dotrun-docker requires Python 3.8 or newer"
 
 setup(
     name="dotrun-docker",
-    version="1.0.0",
+    version="1.0.1",
     packages=["dotrun_docker"],
     install_requires=[
         "ipdb",
