@@ -203,6 +203,13 @@ class Project:
 
         return result
 
+    def help(self):
+        """
+        Display a list of commands provided by this project.
+        """
+
+        self.exec(["yarn", "run", "--non-interactive"])
+
     def terminate_background_processes(self):
         for process in self._background_processes:
             process.terminate()

@@ -116,6 +116,9 @@ def cli(args=None):
     if command == "exec":
         return dotrun.exec(arguments.remainder or ["bash"])
 
+    if command == "help":
+        return dotrun.help()
+
     if command == "install":
         return dotrun.install(force=True)
 
