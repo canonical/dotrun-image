@@ -29,12 +29,18 @@ class RawWithDefaultsFormatter(
     pass
 
 
+def get_commands():
+    return "The following commands have been provided by this project's package.json.\n\n{}".format(
+        os.popen("yarn run --non-interactive").read()
+    )
+
 cli_parser = ArgumentParser(
     description=(
         "Containerized project-level dependency management and "
         "package.json commands"
     ),
     formatter_class=RawWithDefaultsFormatter,
+    epilog=get_commands()
 )
 
 # Options
@@ -115,9 +121,6 @@ def cli(args=None):
 
     if command == "exec":
         return dotrun.exec(arguments.remainder or ["bash"])
-
-    if command == "help":
-        return dotrun.help()
 
     if command == "install":
         return dotrun.install(force=True)
