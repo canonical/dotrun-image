@@ -1,0 +1,43 @@
+name: PR checks
+on: pull_request
+
+jobs:
+  run-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: DOCKER_BUILDKIT=1 docker build --tag canonicalwebteam/dotrun-image:local .
+
+      - name: Run image
+        run: |
+          docker run -it -p 8004:8004 --name dotrun -d canonicalwebteam/dotrun-image:local /bin/bash
+
+      - name: Clone repo
+        run: |
+          docker exec -it dotrun git clone https://github.com/canonical-web-and-design/snapcraft.io/
+
+      - name: Run dotrun
+        run: |
+          docker exec -it -d dotrun bash -c "cd snapcraft.io && dotrun"
+
+      - name: Test site
+        run: curl -v --head --fail --retry 30 --retry-delay 10 --retry-all-errors http://localhost:8004
+
+  lint-python:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install python dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          sudo pip3 install flake8 black
+
+      - name: Lint python
+        run: flake8 src && black --check --line-length 79 src
+
+  
