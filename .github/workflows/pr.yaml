@@ -17,11 +17,11 @@ jobs:
 
       - name: Clone repo
         run: |
-          docker exec -it dotrun git clone https://github.com/canonical-web-and-design/snapcraft.io/
+          docker exec -i dotrun git clone https://github.com/canonical-web-and-design/snapcraft.io/
 
       - name: Run dotrun
         run: |
-          docker exec -it -d dotrun bash -c "cd snapcraft.io && dotrun"
+          docker exec -d dotrun bash -c "cd snapcraft.io && dotrun"
 
       - name: Test site
         run: curl -v --head --fail --retry 30 --retry-delay 10 --retry-all-errors http://localhost:8004
