@@ -30,9 +30,14 @@ class RawWithDefaultsFormatter(
 
 
 def get_commands():
-    return "The following commands have been provided by this project's package.json.\n\n{}".format(
-        os.popen("yarn run --non-interactive").read()
+    commands = (
+        "The following commands have been provided by this project's "
+        "package.json.\n\n{}".format(
+            os.popen("yarn run --non-interactive").read()
+        )
     )
+    return commands
+
 
 cli_parser = ArgumentParser(
     description=(
@@ -40,7 +45,7 @@ cli_parser = ArgumentParser(
         "package.json commands"
     ),
     formatter_class=RawWithDefaultsFormatter,
-    epilog=get_commands()
+    epilog=get_commands(),
 )
 
 # Options
