@@ -11,8 +11,8 @@ RUN apt-get update && \
     apt-get install --yes \
     git curl wget build-essential python3-dev python3-pip
 
-# Set up NodeJS 16 repository
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+# Set up NodeJS 20 repository
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 
 # Install common dependencies used in projects
 RUN apt-get install --yes \
