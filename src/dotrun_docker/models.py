@@ -83,6 +83,20 @@ class Project:
         for key, value in env_extra.items():
             self.env[key] = str(value)
 
+    def is_yarn(self):
+        """
+        Check if the project is set up for NPM or Yarn.
+        """
+
+        return os.path.isfile(os.path.join(f"{self.path}/yarn.lock"))
+
+    def get_package_manager(self):
+        """
+        Get the package manager that is being used in this project.
+        """
+
+        return "yarn" if self.is_yarn() else "npm"
+    
     def has_script(self, script_name):
         """
         Check if the project's package.json contains the named script
@@ -145,7 +159,7 @@ class Project:
                 return False
 
         self.exec(
-            ["yarn", "run", script_name] + arguments,
+            [self.get_package_manager(), "run", script_name] + arguments,
             exit_on_error=exit_on_error,
         )
 
@@ -234,6 +248,8 @@ class Project:
         lock_hash = None
         if os.path.isfile(os.path.join(self.path, "yarn.lock")):
             lock_hash = file_md5(os.path.join(self.path, "yarn.lock"))
+        elif os.path.isfile(os.path.join(self.path, "package-lock.json")):
+            lock_hash = file_md5(os.path.join(self.path, "package-lock.json"))
 
         return {
             "dependencies": dependencies,
@@ -254,7 +270,7 @@ class Project:
 
         if not force:
             current_state = self._get_yarn_state()
-            previous_state = self.state["yarn"]
+            previous_state = self.state[self.get_package_manager()]
             changes = current_state != previous_state
 
         if changes or force:
@@ -263,8 +279,8 @@ class Project:
             if force:
                 self.log.note("Installing yarn dependencies (forced)")
 
-            self.exec(["yarn", "install"])
-            self.state["yarn"] = self._get_yarn_state()
+            self.exec([self.get_package_manager(), "install"])
+            self.state[self.get_package_manager()] = self._get_yarn_state()
         else:
             self.log.note("Yarn dependencies up to date")
 
