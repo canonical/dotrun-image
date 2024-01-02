@@ -22,7 +22,8 @@ RUN apt-get install --yes \
     libatk1.0-0 libatspi2.0-0 libcairo2 libcups2 libdrm2 \
     libgbm1 libnss3 libpango-1.0-0 libx11-6 libxau6 libxcb1 \
     libxcomposite1 libxdamage1 libxdmcp6 libxext6 libxfixes3 \
-    libxkbcommon-x11-0 libxrandr2 nodejs haproxy libwayland-client0
+    libxkbcommon-x11-0 libxrandr2 nodejs haproxy libwayland-client0 \
+    npm
 
 # Update npm and install yarn
 RUN npm install --location=global npm
