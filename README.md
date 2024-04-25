@@ -7,7 +7,7 @@ This project is a docker image for developing Node.js and Python web projects. I
 
 - Based on ubuntu:focal
 - Python 3.8
-- Node 16 LTS
+- Node 20 LTS
 - Yarn
 - dotrun-docker
 
