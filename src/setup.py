@@ -4,11 +4,11 @@
 import sys
 from setuptools import setup
 
-assert sys.version_info >= (3, 8), "dotrun-docker requires Python 3.8 or newer"
+assert sys.version_info >= (3, 10), "dotrun-docker requires Python 3.10 or newer"
 
 setup(
     name="dotrun-docker",
-    version="1.0.2",
+    version="1.1.0-rc1",
     packages=["dotrun_docker"],
     install_requires=[
         "ipdb",
