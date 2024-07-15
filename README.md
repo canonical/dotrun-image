@@ -6,7 +6,7 @@ This project is a docker image for developing Node.js and Python web projects. I
 ## Image Features
 
 - Based on ubuntu:focal
-- Python 3.8
+- Python 3.10
 - Node 20 LTS
 - Yarn
 - dotrun-docker
@@ -51,6 +51,25 @@ To QA any changes to this image, you probably want to build a local image with D
 
 `docker build . --tag canonicalwebteam/dotrun-image:local`
 
+### Using python
+
+You should probably create a virtualenv, and then install dotrun-docker.
+```bash
+pip uninstall dotrun-docker
+cd src
+pip install .
+```
+
+## Using this image with dotrun
+
+`dotrun-image` can be used with `dotrun 2.3.0`  by building a docker image, and specifying the local image name when running dotrun, for example:
+```bash
+docker build . --tag canonicalwebteam/dotrun-image:local
+cd snapcraft.io
+dotrun --image canonicalwebteam/dotrun-image:local install
+dotrun --image canonicalwebteam/dotrun-image:local serve
+```
+
 ## Releasing
 
 Changes to the default branch will trigger a new release using GitHub Actions.
@@ -58,6 +77,7 @@ Changes to the default branch will trigger a new release using GitHub Actions.
 - Released to [Docker Hub canonicalwebteam/dotrun-image](https://hub.docker.com/r/canonicalwebteam/dotrun-image/)
 - Architectures: AMD64 and ARM64
 
-### Auto-releases
+### Releasing specific versions
 
-This image is automatically built and released every month. This is to ensure dependencies are up to date on local development when using [dotrun](https://github.com/canonical/dotrun).
+Update the version in setup.py, and push the changes to a new branch called `release/<version>` e.g `release/1.2.0-rc1`. This will trigger a new release and publish the tagged image to dockerhub.
+
