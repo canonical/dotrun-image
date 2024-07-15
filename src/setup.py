@@ -4,7 +4,10 @@
 import sys
 from setuptools import setup
 
-assert sys.version_info >= (3, 10), "dotrun-docker requires Python 3.10 or newer"
+assert sys.version_info >= (
+    3,
+    10,
+), "dotrun-docker requires Python 3.10 or newer"
 
 setup(
     name="dotrun-docker",
