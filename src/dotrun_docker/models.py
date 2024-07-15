@@ -161,14 +161,15 @@ class Project:
             self.env["PATH"] = self.pyenv_path + "/bin:" + self.env["PATH"]
             self.env.pop("PYTHONHOME", None)
 
-            if not os.path.isfile(f"{self.pyenv_path}/bin/python3.8"):
+            # This hard requirement can be removed once other python versions
+            # have been tested with dotrun on canonical web projects
+            if not os.path.isfile(f"{self.pyenv_path}/bin/python3.10"):
                 self.log.note(
-                    "Dotrun was updated to use Python 3.8! This project "
-                    "seems to be using a previous Python environment."
+                    "Dotrun strictly runs on Python 3.10! This project "
+                    "seems to be using a different Python environment."
                 )
-                self.log.step("Creating new Python environment")
                 self._clean_python_env()
-                self._install_python_dependencies(force=True)
+                sys.exit(1)
 
             self.log.step(
                 f"$ {' '.join(commands)}",
