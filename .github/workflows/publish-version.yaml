@@ -1,0 +1,39 @@
+name: Publish Tag
+
+on:
+  push:
+    branches:
+      - "release/*"
+
+jobs:
+  extract_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Extract version from setup.py
+        id: extract_version
+        run: |
+          DOTRUN_VERSION=$(sed -n 's/^.*version="\(\S*\)".$/\1/p' src/setup.py) | echo "DOTRUN_VERSION=$DOTRUN_VERSION" >> $GITHUB_ENV
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: canonicalwebteam/dotrun-image:${{ env.DOTRUN_VERSION }}
+    
