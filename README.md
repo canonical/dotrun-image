@@ -80,4 +80,7 @@ Changes to the default branch will trigger a new release using GitHub Actions.
 ### Releasing specific versions
 
 Update the version in setup.py, and push the changes to a new branch called `release/<version>` e.g `release/1.2.0-rc1`. This will trigger a new release and publish the tagged image to dockerhub.
-
+You can then pull the published image using
+```bash
+docker pull canonicalwebteam/dotrun-image:1.2.0-rc1
+```
