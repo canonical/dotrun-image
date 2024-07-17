@@ -6,7 +6,7 @@ on:
       - "release/*"
 
 jobs:
-  extract_version:
+  publish_tag:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -15,8 +15,9 @@ jobs:
       - name: Extract version from setup.py
         id: extract_version
         run: |
-          DOTRUN_VERSION=$(sed -n 's/^.*version="\(\S*\)".$/\1/p' src/setup.py) | echo "DOTRUN_VERSION=$DOTRUN_VERSION" >> $GITHUB_ENV
-
+          DOTRUN_VERSION=$(sed -n 's/^.*version="\(\S*\)".$/\1/p' src/setup.py)
+          echo "DOTRUN_VERSION=$DOTRUN_VERSION" >> $GITHUB_ENV
+          
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
