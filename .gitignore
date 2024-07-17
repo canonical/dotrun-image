@@ -1,0 +1,11 @@
+*.egg-info/
+dist/
+src/build/
+env/
+env*/
+.venv/
+__pycache__/
+*.bz2
+environments/
+.vscode/
+.dotrun.json
