@@ -297,6 +297,7 @@ class Project:
         self.exec(
             [
                 "virtualenv",
+                "--no-setuptools",
                 "--always-copy",
                 "--python",
                 python_path,
@@ -333,7 +334,6 @@ class Project:
                 [
                     "pip3",
                     "install",
-                    "setuptools==68.1.0",
                     "--requirement",
                     "requirements.txt",
                 ]
