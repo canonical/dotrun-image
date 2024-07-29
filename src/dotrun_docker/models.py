@@ -74,7 +74,7 @@ class Project:
         self.pyenv_path = f"{self.path}/{self.pyenv_dir}"
         self._background_processes = []
 
-        # Load the env vile if it exists
+        # Load the env file if it exists
         load_dotenv(dotenv_path=f"{self.path}/.env")
         load_dotenv(dotenv_path=f"{self.path}/.env.local", override=True)
         self.env = os.environ
@@ -302,6 +302,16 @@ class Project:
                 "--python",
                 python_path,
                 self.pyenv_path,
+            ]
+        )
+        self.exec(
+            [
+                f"{self.pyenv_path}/bin/python",
+                "-m",
+                "pip",
+                "install",
+                "--upgrade",
+                "setuptools==69.5.1",
             ]
         )
 
