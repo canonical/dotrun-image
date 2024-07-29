@@ -31,7 +31,7 @@ RUN npm install --location=global yarn
 # Copy and install dotrun-docker
 WORKDIR /tmp
 ADD src src
-RUN pip3 install ./src
+RUN pip3 install setuptools==68.1.0 ./src
 RUN rm -r /tmp/*
 
 # Create ubuntu user
