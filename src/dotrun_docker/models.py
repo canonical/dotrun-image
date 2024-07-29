@@ -329,7 +329,15 @@ class Project:
             if force:
                 self.log.note("Installing python dependencies (forced)")
 
-            self.exec(["pip3", "install", "--requirement", "requirements.txt"])
+            self.exec(
+                [
+                    "pip3",
+                    "install",
+                    "setuptools==68.1.0",
+                    "--requirement",
+                    "requirements.txt",
+                ]
+            )
             self.state["python"] = self._get_python_state()
         else:
             self.log.note("Python dependencies up to date")
