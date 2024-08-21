@@ -172,8 +172,9 @@ class Project:
                     if bin_dir.startswith("python")
                 ]
                 self.log.note(
-                    "Dotrun strictly supports python 3.10, but your virtualenv "
-                    f"at .venv is using python version: {python_versions}."
+                    "Dotrun strictly supports python 3.10, but your "
+                    "virtualenv at .venv is using python version: "
+                    f"{python_versions}."
                 )
                 self._clean_python_env()
                 sys.exit(1)
