@@ -1,15 +1,15 @@
 #! /usr/bin/env python3
 
 # Standard library
+import os
+import sys
 from argparse import (
+    REMAINDER,
+    SUPPRESS,
     ArgumentDefaultsHelpFormatter,
     ArgumentParser,
     RawTextHelpFormatter,
-    REMAINDER,
-    SUPPRESS,
 )
-import os
-import sys
 from importlib import metadata
 
 # Packages
@@ -134,6 +134,8 @@ def cli(args=None):
         dotrun.install(force=False)
 
     # By default, run a yarn script
+    if command == "":
+        command = "start"
     if dotrun.has_script(command):
         try:
             return dotrun.yarn_run(command, arguments.remainder)

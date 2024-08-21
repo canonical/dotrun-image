@@ -74,7 +74,7 @@ class Project:
         self.pyenv_path = f"{self.path}/{self.pyenv_dir}"
         self._background_processes = []
 
-        # Load the env vile if it exists
+        # Load the env file if it exists
         load_dotenv(dotenv_path=f"{self.path}/.env")
         load_dotenv(dotenv_path=f"{self.path}/.env.local", override=True)
         self.env = os.environ
@@ -161,14 +161,23 @@ class Project:
             self.env["PATH"] = self.pyenv_path + "/bin:" + self.env["PATH"]
             self.env.pop("PYTHONHOME", None)
 
-            if not os.path.isfile(f"{self.pyenv_path}/bin/python3.8"):
+            # This hard requirement can be removed once other python versions
+            # have been tested with dotrun on canonical web projects
+            if not os.path.isfile(f"{self.pyenv_path}/bin/python3.10"):
+                bin_dirs = os.listdir(f"{self.pyenv_path}/bin")
+                # Filter python versions
+                python_versions = [
+                    bin_dir
+                    for bin_dir in bin_dirs
+                    if bin_dir.startswith("python")
+                ]
                 self.log.note(
-                    "Dotrun was updated to use Python 3.8! This project "
-                    "seems to be using a previous Python environment."
+                    "Dotrun strictly supports python 3.10, but your "
+                    "virtualenv at .venv is using python version: "
+                    f"{python_versions}."
                 )
-                self.log.step("Creating new Python environment")
                 self._clean_python_env()
-                self._install_python_dependencies(force=True)
+                sys.exit(1)
 
             self.log.step(
                 f"$ {' '.join(commands)}",
@@ -296,10 +305,21 @@ class Project:
         self.exec(
             [
                 "virtualenv",
+                "--no-setuptools",
                 "--always-copy",
                 "--python",
                 python_path,
                 self.pyenv_path,
+            ]
+        )
+        self.exec(
+            [
+                f"{self.pyenv_path}/bin/python",
+                "-m",
+                "pip",
+                "install",
+                "--upgrade",
+                "setuptools==69.5.1",
             ]
         )
 
@@ -328,7 +348,14 @@ class Project:
             if force:
                 self.log.note("Installing python dependencies (forced)")
 
-            self.exec(["pip3", "install", "--requirement", "requirements.txt"])
+            self.exec(
+                [
+                    "pip3",
+                    "install",
+                    "--requirement",
+                    "requirements.txt",
+                ]
+            )
             self.state["python"] = self._get_python_state()
         else:
             self.log.note("Python dependencies up to date")
