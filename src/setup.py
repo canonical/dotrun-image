@@ -2,6 +2,7 @@
 
 # Core
 import sys
+
 from setuptools import setup
 
 assert sys.version_info >= (
@@ -11,7 +12,7 @@ assert sys.version_info >= (
 
 setup(
     name="dotrun-docker",
-    version="1.1.0-rc2",
+    version="1.1.0",
     packages=["dotrun_docker"],
     install_requires=[
         "ipdb",
@@ -23,4 +24,3 @@ setup(
     ],
     entry_points={"console_scripts": ["dotrun = dotrun_docker:cli"]},
 )
-"git rebase --continue"

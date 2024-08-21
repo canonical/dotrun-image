@@ -164,9 +164,16 @@ class Project:
             # This hard requirement can be removed once other python versions
             # have been tested with dotrun on canonical web projects
             if not os.path.isfile(f"{self.pyenv_path}/bin/python3.10"):
+                bin_dirs = os.listdir(f"{self.pyenv_path}/bin")
+                # Filter python versions
+                python_versions = [
+                    bin_dir
+                    for bin_dir in bin_dirs
+                    if bin_dir.startswith("python")
+                ]
                 self.log.note(
-                    "Dotrun strictly runs on Python 3.10! This project "
-                    "seems to be using a different Python environment."
+                    "Dotrun strictly supports python 3.10, but your virtualenv "
+                    f"at .venv is using python version: {python_versions}."
                 )
                 self._clean_python_env()
                 sys.exit(1)
