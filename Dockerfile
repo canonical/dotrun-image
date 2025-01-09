@@ -11,8 +11,8 @@ RUN apt-get update && \
     apt-get install --yes \
     git curl wget build-essential python3-dev python3-pip
 
-# Set up Node.js 21 repository
-RUN curl -fsSL https://deb.nodesource.com/setup_21.x | bash -
+# Set up Node.js 22 repository
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
 
 # Install Node.js and dependencies
 RUN apt-get install --yes nodejs haproxy libwayland-client0
