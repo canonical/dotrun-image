@@ -12,7 +12,7 @@ assert sys.version_info >= (
 
 setup(
     name="dotrun-docker",
-    version="1.1.0",
+    version="1.2.0",
     packages=["dotrun_docker"],
     install_requires=[
         "ipdb",
