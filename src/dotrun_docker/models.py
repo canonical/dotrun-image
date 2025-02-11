@@ -48,8 +48,11 @@ class State:
             state = json.load(state_file)
         with open(self.filepath, "w") as state_file:
             # keep project version preferences
-            state = {key: value for key,
-                     value in state.items() if key.endswith("_version")}
+            state = {
+                key: value
+                for key, value in state.items()
+                if key.endswith("_version")
+            }
             json.dump(state, state_file)
 
 
