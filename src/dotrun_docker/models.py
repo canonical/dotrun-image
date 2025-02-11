@@ -43,6 +43,18 @@ class State:
         with open(self.filepath, "w") as state_file:
             return json.dump(state, state_file)
 
+    def clean(self):
+        with open(self.filepath, "r") as state_file:
+            state = json.load(state_file)
+        with open(self.filepath, "w") as state_file:
+            # keep project version preferences
+            state = {
+                key: value
+                for key, value in state.items()
+                if key.endswith("_version")
+            }
+            json.dump(state, state_file)
+
 
 class Logger:
     def note(self, note):
@@ -109,7 +121,7 @@ class Project:
 
         if os.path.isfile(self.statefile_path):
             self.log.step("Removing `.dotrun.json` state file")
-            os.remove(self.statefile_path)
+            self.state.clean()
 
         if os.path.isdir("node_modules"):
             self.log.step("Removing `node_modules`")
@@ -160,25 +172,6 @@ class Project:
             self.env["VIRTUAL_ENV"] = self.pyenv_path
             self.env["PATH"] = self.pyenv_path + "/bin:" + self.env["PATH"]
             self.env.pop("PYTHONHOME", None)
-
-            # This hard requirement can be removed once other python versions
-            # have been tested with dotrun on canonical web projects
-            if not os.path.isfile(f"{self.pyenv_path}/bin/python3.10"):
-                bin_dirs = os.listdir(f"{self.pyenv_path}/bin")
-                # Filter python versions
-                python_versions = [
-                    bin_dir
-                    for bin_dir in bin_dirs
-                    if bin_dir.startswith("python")
-                ]
-                self.log.note(
-                    "Dotrun strictly supports python 3.10, but your "
-                    "virtualenv at .venv is using python version: "
-                    f"{python_versions}."
-                )
-                self._clean_python_env()
-                sys.exit(1)
-
             self.log.step(
                 f"$ {' '.join(commands)}",
                 aside=f"virtualenv `{self.pyenv_dir}`",
@@ -296,19 +289,27 @@ class Project:
 
     def _create_python_environment(self):
         """
-        Create a Python environment using virtualenv
+        Create a Python environment using python3-venv
         """
 
         self.log.note(f"Creating python environment: {self.pyenv_dir}")
+        custom_python_version = self.state["python_version"]
+        if custom_python_version:
+            # use mise en place python version
+            self.exec(
+                [
+                    "mise",
+                    "use",
+                    "-g",
+                    f"python@{custom_python_version}",
+                ]
+            )
         python_path = shutil.which("python3")
-
         self.exec(
             [
-                "virtualenv",
-                "--no-setuptools",
-                "--always-copy",
-                "--python",
                 python_path,
+                "-m",
+                "venv",
                 self.pyenv_path,
             ]
         )
