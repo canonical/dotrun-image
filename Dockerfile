@@ -28,19 +28,16 @@ ADD src src
 RUN pip3 install --break-system-packages ./src
 RUN rm -r /tmp/*
 
-USER ubuntu
+ENV PATH="/root/.local/bin:/root/.local/share/mise/shims:$PATH"
 
-# Install mise
-RUN curl https://mise.run  | sh
-ENV PATH="/home/ubuntu/.local/bin:/home/ubuntu/.local/share/mise/shims:$PATH"
-# Set Python 3.10 as default
-RUN mise use -g python@3.10
-# Install Node.js and package managers
-RUN mise use -g node@22
-RUN npm config set prefix "/home/ubuntu/.npm-global"
-ENV PATH="/home/ubuntu/.npm-global/bin:$PATH"
+RUN curl https://mise.run | sh && \
+    mise use -g python@3.10 && \
+    mise use -g node@22
 
-RUN npm install --global npm
-RUN npm install --global yarn
+ENV PATH="/root/.npm-global/bin:$PATH"
+
+RUN npm config set prefix "/root/.npm-global" && \
+    npm install --global npm && \
+    npm install --global yarn
 
 WORKDIR /home/ubuntu
